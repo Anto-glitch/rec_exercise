@@ -2,7 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
-#include "nlohman/json.hpp"
+#include "json.hpp"
 
 using json = nlohmann::json;
 
@@ -72,13 +72,11 @@ int main() {
     // Wczytaj pierwszy plik
        std::ifstream data("dane/zbiór_wejściowy.json");  // niestety wskazuje na jakiś błąd w tym pliku kolejny plik wczytuje bez problemu
     if(!data.good()) std::cout<<"Cos jest nie tak z plikiem"<<std::endl;
-    json whole_info;
     data>>whole_info;
 
     //wczytaj drugi plik(kategorie)
      std::ifstream data2("dane/kategorie.json");
     if(!data2.good()) std::cout<<"Cos jest nie tak z plikiem"<<std::endl;
-    json categories;
     data2>>categories;
 
 
@@ -96,7 +94,9 @@ int main() {
         while(whole_info[i]["Typ"]!=categories[j]["Typ"]&&whole_info[i]["Czystość"]!=categories[j]["Czystość"])  j++;
 
         //vector przyjmuje indeks oraz wartosc kamienia
-        comparing_vec.push_back(std::make_pair(i,masa_unc*categories[j]["Wartość za uncję (USD)"]));
+        int val=categories[j]["Wartość za uncję (USD)"];
+        val=val*masa_unc;
+        comparing_vec.push_back(std::make_pair(i,val));
     }
     //sortowanie według wartości kamieni
     sort(comparing_vec.begin(),comparing_vec.end(),comparison);
