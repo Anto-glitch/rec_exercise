@@ -71,7 +71,7 @@ int main() {
     json whole_info, categories;
     
     // Wczytaj pierwszy plik
-       std::ifstream data("dane/zbior_wejsciowy.json");  // niestety wskazuje na jakiś błąd w tym pliku kolejny plik wczytuje bez problemu
+       std::ifstream data("dane/zbior_wejsciowy.json");  
     if(!data.good()) std::cout<<"Cos jest nie tak z plikiem"<<std::endl;
     data>>whole_info;
 
