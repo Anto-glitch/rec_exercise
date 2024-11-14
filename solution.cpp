@@ -39,7 +39,7 @@ float change_units(std::string weight)
             }
         }
         //zwraca wartosc w uncjach
-        return value/5;
+        return value*0.00705479;
     }
     //jesli w gramach
     else
@@ -71,7 +71,7 @@ int main() {
     json whole_info, categories;
     
     // Wczytaj pierwszy plik
-       std::ifstream data("dane/zbior_wejsciowy.json");  
+       std::ifstream data("dane/zbior_wejsciowy.json");  // niestety wskazuje na jakiś błąd w tym pliku kolejny plik wczytuje bez problemu
     if(!data.good()) std::cout<<"Cos jest nie tak z plikiem"<<std::endl;
     data>>whole_info;
 
@@ -90,7 +90,7 @@ int main() {
     {
         weight= whole_info[i]["Masa"];
         masa_unc=change_units(weight);
-       // std::cout<<masa_unc<<" "<<weight<<std::endl;
+        //std::cout<<masa_unc<<" "<<weight<<std::endl;
         int j=0;
         //znajduje kategorie
         while((whole_info[i]["Typ"]!=categories[j]["Typ"]||whole_info[i]["Czystość"]!=categories[j]["Czystość"])&&j<whole_info.size())  j++;
@@ -98,9 +98,9 @@ int main() {
         //vector przyjmuje indeks oraz wartosc kamienia
         {
             float val=categories[j]["Wartość za uncję (USD)"];
-         //   std::cout<<val<<std::endl;
-            val=val*masa_unc;
           //  std::cout<<val<<std::endl;
+            val=val*masa_unc;
+            //std::cout<<val<<std::endl;
             comparing_vec.push_back(std::make_pair(i,val));
         }
     }
@@ -110,7 +110,7 @@ int main() {
     //wypisanie pieciu najbardziej wartosciowych kamieni
     for(int i=0;i<5;i++)
     {
-        std::cout<<std::setprecision(12)<<whole_info[comparing_vec[i].first]<<std::endl<<"Wartosc: "<<comparing_vec[i].second<<std::endl;
+        std::cout<<std::setw(4)<<whole_info[comparing_vec[i].first]<<std::endl<<"Wartosc: "<<round(comparing_vec[i].second*100)/100<<std::endl;
     }
 
 }
